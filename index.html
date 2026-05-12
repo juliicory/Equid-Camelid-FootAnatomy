@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Equid &amp; Camelid Foot Anatomy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=Lexend:wght@100..900&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="index.css" />
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/",
+        "fflate": "https://cdn.jsdelivr.net/npm/fflate@0.8.2/esm/browser.js"
+      }
+    }
+  </script>
+</head>
+<body>
+  <nav id="nav-bar">
+    <button id="theme-toggle" aria-label="Toggle theme">
+      <!-- sun: visible in dark mode -->
+      <svg id="icon-sun" viewBox="0 0 24 24" stroke-linecap="round">
+        <circle cx="12" cy="12" r="4"/>
+        <line x1="12" y1="2"  x2="12" y2="5"/>
+        <line x1="12" y1="19" x2="12" y2="22"/>
+        <line x1="2"  y1="12" x2="5"  y2="12"/>
+        <line x1="19" y1="12" x2="22" y2="12"/>
+        <line x1="5.64" y1="5.64"   x2="7.05" y2="7.05"/>
+        <line x1="16.95" y1="16.95" x2="18.36" y2="18.36"/>
+        <line x1="5.64" y1="18.36"  x2="7.05" y2="16.95"/>
+        <line x1="16.95" y1="7.05"  x2="18.36" y2="5.64"/>
+      </svg>
+      <!-- moon: visible in light mode -->
+      <svg id="icon-moon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    </button>
+    <span class="nav-label" data-view="horse">Horse</span>
+    <span class="nav-label" data-view="both">Both</span>
+    <span class="nav-label" data-view="camel">Camel</span>
+  </nav>
+  <div id="nav-divider"></div>
+
+  <div id="canvas-container">
+    <canvas id="three-canvas"></canvas>
+
+    <div id="filter-controls">
+      <label class="filter-label">
+        <input type="radio" name="filter" value="skeleton" />
+        Skeleton
+      </label>
+      <label class="filter-label">
+        <input type="radio" name="filter" value="softTissue" />
+        Soft Tissue
+      </label>
+      <label class="filter-label">
+        <input type="radio" name="filter" value="both" checked />
+        Both
+      </label>
+    </div>
+
+    <div id="info-box">
+      <div id="info-header">Body Part Name</div>
+      <div id="info-divider"></div>
+      <div id="info-body">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+        commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+        velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+        occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+        mollit anim id est laborum.
+        <br /><br />
+        Sed ut perspiciatis unde omnis iste natus error sit voluptatem
+        accusantium doloremque laudantium, totam rem aperiam eaque ipsa quae ab
+        illo inventore veritatis et quasi architecto beatae vitae dicta sunt
+        explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut
+        odit aut fugit, sed quia consequuntur magni dolores eos qui ratione
+        voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum
+        quia dolor sit amet consectetur adipisci velit.
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="index.js"></script>
+</body>
+</html>
