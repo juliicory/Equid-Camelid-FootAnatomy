@@ -1,11 +1,11 @@
 import * as THREE from 'three';
 import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
+import { MESH_COLORS } from './camelDescriptions.js';
 
-const SKELETON_KEYWORDS = ['metatarsus', 'phal1', 'phal2', 'phal3', 'phal_1', 'phal_2', 'phal_3'];
+const SKELETON_KEYWORDS = ['metatarsus', 'phal_1', 'phal_2', 'phal_3'];
 const camelGroups = { skeleton: [], softTissue: [] };
 
-// Exported group — index.js adds this to the scene.
-// Its contents are managed here (placeholder → FBX).
+// ── Exported group — index.js adds this to the scene ────────
 export const camelObject = new THREE.Group();
 
 const placeholder = new THREE.Mesh(
@@ -34,7 +34,6 @@ document.querySelectorAll('input[name="filter"]').forEach(radio => {
 
 const loader = new FBXLoader();
 loader.load('./camelCrossSections.fbx', (fbx) => {
-  // Fit into ~2-unit bounding box and center
   const box = new THREE.Box3().setFromObject(fbx);
   const center = box.getCenter(new THREE.Vector3());
   const size = box.getSize(new THREE.Vector3());
@@ -42,10 +41,17 @@ loader.load('./camelCrossSections.fbx', (fbx) => {
   fbx.scale.setScalar(scale);
   fbx.position.copy(center).multiplyScalar(-scale);
 
-  // Categorize meshes
   fbx.traverse(child => {
     if (!child.isMesh) return;
     const name = child.name.toLowerCase();
+
+    for (const [key, color] of MESH_COLORS) {
+      if (name.includes(key)) {
+        child.material = new THREE.MeshPhongMaterial({ color, shininess: 50 });
+        break;
+      }
+    }
+
     const isBone = SKELETON_KEYWORDS.some(kw => name.includes(kw));
     (isBone ? camelGroups.skeleton : camelGroups.softTissue).push(child);
   });

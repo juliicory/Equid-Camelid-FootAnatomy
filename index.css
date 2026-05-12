@@ -8,9 +8,8 @@
 
 :root {
   --bg:              #0e0e1c;
-  --nav-bg:          #0e0e1c;
   --text-nav:        #c8c8e0;
-  --text-hover:      #ffffff;
+  --text-hover:      #131111;
   --divider:         rgba(255, 255, 255, 0.12);
   --info-bg:         rgba(255, 255, 255, 0.50);
   --info-text:       #1a1a2e;
@@ -23,7 +22,6 @@
 
 [data-theme="light"] {
   --bg:              #ceced4;
-  --nav-bg:          #ceced4;
   --text-nav:        #2a2a3e;
   --text-hover:      #000000;
   --divider:         rgba(0, 0, 0, 0.12);
@@ -55,7 +53,7 @@ body {
   align-items: center;
   height: 56px;
   flex-shrink: 0;
-  background: var(--nav-bg);
+  background: var(--bg);
   transition: background 0.2s ease;
 }
 
