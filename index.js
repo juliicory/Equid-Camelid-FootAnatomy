@@ -88,27 +88,36 @@ const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 let selectedMesh = null;
 let mouseDownAt = { x: 0, y: 0 };
+const infoBox    = document.getElementById('info-box');
 const infoHeader = document.getElementById('info-header');
 const infoBody   = document.getElementById('info-body');
-const defaultInfoBody = infoBody.innerHTML;
 
 function clearSelection() {
   outlinePass.selectedObjects = [];
   selectedMesh = null;
-  infoHeader.textContent = 'Body Part Name';
-  infoBody.innerHTML = defaultInfoBody;
+  infoBox.classList.remove('visible');
+  infoHeader.textContent = '';
+  infoBody.textContent = '';
 }
 
 function selectMesh(mesh) {
   selectedMesh = mesh;
 
-  // In Both tab, also highlight all anatomical pairs (if defined)
   const pairs = activeView === 'both' ? getPairedMeshes(mesh) : [];
   outlinePass.selectedObjects = [mesh, ...pairs];
 
-  infoHeader.textContent = getMeshLabel(mesh.name, mesh);
-  const desc = getMeshDescription(mesh.name, mesh);
-  infoBody.textContent = desc || 'No description added yet.';
+  if (activeView === 'both') {
+    infoHeader.innerHTML = [mesh, ...pairs]
+      .map(m => getMeshLabel(m.name, m))
+      .join('<br>');
+    infoBody.textContent = '';
+  } else {
+    infoHeader.textContent = getMeshLabel(mesh.name, mesh);
+    const desc = getMeshDescription(mesh.name, mesh);
+    infoBody.textContent = desc || 'No description added yet.';
+  }
+
+  infoBox.classList.add('visible');
 }
 
 // ── Both-tab drag rotation ──────────────────────────────────
@@ -146,8 +155,9 @@ canvas.addEventListener('click', e => {
   raycaster.setFromCamera(mouse, camera);
 
   const pickable = [];
-  activeMesh.traverse(child => { if (child.isMesh) pickable.push(child); });
-  if (activeMesh.isMesh) pickable.push(activeMesh);
+  const worldVisible = obj => { let o = obj; while (o) { if (!o.visible) return false; o = o.parent; } return true; };
+  activeMesh.traverse(child => { if (child.isMesh && worldVisible(child)) pickable.push(child); });
+  if (activeMesh.isMesh && worldVisible(activeMesh)) pickable.push(activeMesh);
 
   const hits = raycaster.intersectObjects(pickable, false);
 
@@ -160,7 +170,7 @@ canvas.addEventListener('click', e => {
 });
 
 // ── Nav switching ───────────────────────────────────────────
-const HAS_FILTER = new Set(['horse', 'camel']);
+const HAS_FILTER = new Set(['horse', 'camel', 'both']);
 // Camera z-distance per tab: Both tab needs to see two models side-by-side
 const CAM_Z = { horse: 3, camel: 3, both: 2.75 };
 
@@ -179,6 +189,7 @@ document.querySelectorAll('.nav-label').forEach(label => {
     scene.add(activeMesh);
     // Reset camera for the tab; disable orbit in Both tab (drag rotates models instead)
     controls.enabled = view !== 'both';
+    document.getElementById('info-box').classList.toggle('compact', view === 'both');
     camera.position.set(0, 0, CAM_Z[view] ?? 3);
     controls.target.set(0, 0, 0);
     controls.update();

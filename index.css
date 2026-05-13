@@ -9,7 +9,7 @@
 :root {
   --bg:              #0e0e1c;
   --text-nav:        #c8c8e0;
-  --text-hover:      #131111;
+  --text-hover:      #ffffff;
   --divider:         rgba(255, 255, 255, 0.12);
   --info-bg:         rgba(255, 255, 255, 0.50);
   --info-text:       #1a1a2e;
@@ -175,11 +175,19 @@ body {
   color: var(--text-hover);
 }
 
-.filter-label input[type="radio"] {
+.filter-label input[type="checkbox"] {
   accent-color: var(--accent);
   width: 14px;
   height: 14px;
   cursor: pointer;
+}
+
+.filter-sep {
+  width: 1px;
+  height: 14px;
+  background: var(--filter-border);
+  margin: 0 4px;
+  align-self: center;
 }
 
 /* ── Info Box ────────────────────────────────────────────── */
@@ -189,7 +197,6 @@ body {
   top: 20px;
   right: 20px;
   width: 30%;
-  height: 50%;
   background: var(--info-bg);
   border-radius: 3px;
   padding: 18px 20px;
@@ -197,7 +204,19 @@ body {
   flex-direction: column;
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
-  transition: background 0.2s ease;
+  opacity: 0;
+  pointer-events: none;
+  transition: background 0.2s ease, width 0.15s ease, opacity 0.15s ease;
+}
+
+#info-box.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#info-box.compact {
+  width: fit-content;
+  min-width: 120px;
 }
 
 #info-header {
@@ -223,7 +242,8 @@ body {
   line-height: 1.7;
   color: var(--info-text);
   overflow-y: auto;
-  flex: 1;
+  flex: 0 0 auto;
+  max-height: 45vh;
 }
 
 #info-body::-webkit-scrollbar {
